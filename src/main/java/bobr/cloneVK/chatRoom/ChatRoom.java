@@ -1,4 +1,4 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chatRoom;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,16 +9,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-public class ChatMessage {
+public class ChatRoom {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String chatRoomId;
     private String senderId;
     private String recipientId;
-    private String content;
 }

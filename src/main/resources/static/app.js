@@ -4,16 +4,19 @@ const stompClient = new StompJs.Client({
 
 stompClient.onConnect = (frame) => {
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', (greeting) => {
+    stompClient.subscribe('/user/Alexander/queue/messages', (greeting) => {
         let message = JSON.parse(greeting.body);
-        showGreeting(message.sender + ": " + message.content);
+        showGreeting(message.senderId + ": " + message.content);
     });
 };
 
 function sendName() {
     stompClient.publish({
         destination: "/chat/message",
-        body: JSON.stringify({'sender': $("#sender").val(), 'content': $("#message").val()})
+        body: JSON.stringify({
+            'senderId': $("#sender").val(),
+            'recipientId': $("#recipient").val(),
+            'content': $("#message").val()})
     });
 }
 
