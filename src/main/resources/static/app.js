@@ -4,7 +4,7 @@ const stompClient = new StompJs.Client({
 
 stompClient.onConnect = (frame) => {
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/user/Alexander/queue/messages', (greeting) => {
+    stompClient.subscribe('/user/1/queue/messages', (greeting) => {
         let message = JSON.parse(greeting.body);
         showGreeting(message.senderId + ": " + message.content);
     });

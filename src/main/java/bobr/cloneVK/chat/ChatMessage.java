@@ -17,8 +17,8 @@ public class ChatMessage {
     @Id
     @GeneratedValue
     private int id;
-    private String chatRoomId;
-    private String senderId;
-    private String recipientId;
+    private Integer chatRoomId;
+    private Integer senderId;
+    private Integer recipientId;
     private String content;
 }

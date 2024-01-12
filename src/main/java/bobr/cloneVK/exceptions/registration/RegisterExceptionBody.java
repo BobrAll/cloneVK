@@ -1,4 +1,4 @@
-package bobr.cloneVK.registration;
+package bobr.cloneVK.exceptions.registration;
 
 import org.springframework.http.HttpStatus;
 

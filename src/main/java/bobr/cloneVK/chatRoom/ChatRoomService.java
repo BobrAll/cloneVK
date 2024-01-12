@@ -1,37 +1,35 @@
 package bobr.cloneVK.chatRoom;
 
+import bobr.cloneVK.user.User;
+import bobr.cloneVK.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
 public class ChatRoomService {
-    private final ChatRoomRepository repository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final UserRepository userRepository;
 
-    public String getChatRoomId(String senderId, String recipientId) {
-        return repository.findBySenderIdAndRecipientId(senderId, recipientId)
-                .map(ChatRoom::getChatRoomId)
-                .orElse(createChatRoom(senderId, recipientId));
+    public int getChatRoomId(int senderId, int recipientId) {
+        Set<User> users = new HashSet<>();
+        users.add(userRepository.findById(senderId).orElseThrow());
+        users.add(userRepository.findById(recipientId).orElseThrow());
+
+        Optional<ChatRoom> chatRoom = chatRoomRepository.findByUsers(users);
+        return chatRoom.isPresent() ? chatRoom.get().getId() : createChatRoom(users).getId();
     }
 
-    private String createChatRoom(String senderId, String recipientId) {
-        String chatRoomId = String.format("%s_%s", senderId, recipientId);
-
-        ChatRoom senderRecipient = ChatRoom.builder()
-                .chatRoomId(chatRoomId)
-                .senderId(senderId)
-                .recipientId(recipientId)
+    private ChatRoom createChatRoom(Set<User> users) {
+        ChatRoom chatRoom = ChatRoom.builder()
+                .users(users)
+                .isGroup(false)
                 .build();
 
-        ChatRoom recipientSender = ChatRoom.builder()
-                .chatRoomId(chatRoomId)
-                .senderId(recipientId)
-                .recipientId(senderId)
-                .build();
-
-        repository.save(senderRecipient);
-        repository.save(recipientSender);
-
-        return chatRoomId;
+        return chatRoomRepository.save(chatRoom);
     }
 }

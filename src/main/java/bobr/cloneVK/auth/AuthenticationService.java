@@ -1,7 +1,7 @@
 package bobr.cloneVK.auth;
 
 import bobr.cloneVK.config.JwtService;
-import bobr.cloneVK.registration.UserAlreadyRegisteredException;
+import bobr.cloneVK.exceptions.registration.UserAlreadyRegisteredException;
 import bobr.cloneVK.user.Role;
 import bobr.cloneVK.user.User;
 import bobr.cloneVK.user.UserRepository;
@@ -26,6 +26,7 @@ public class AuthenticationService {
         }
 
         var user = User.builder()
+                .login(request.getLogin())
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())

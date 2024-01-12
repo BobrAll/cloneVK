@@ -1,4 +1,4 @@
-package bobr.cloneVK.registration;
+package bobr.cloneVK.exceptions.registration;
 
 public class UserAlreadyRegisteredException extends RuntimeException {
     public UserAlreadyRegisteredException() {
