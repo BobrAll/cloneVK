@@ -12,22 +12,27 @@
 
 <div id="main-content" class="container">
     <form class="form-inline">
-        <label for="sender">What is your name?</label>
-        <input type="text" id="sender" class="form-control" placeholder="Your name here...">
-        <br>
-        <label for="recipient">Message to</label>
-        <input type="text" id="recipient" class="form-control" placeholder="Recipient...">
-        <br>
-        <label for="message">Message</label>
-        <input type="text" id="message" class="form-control" placeholder="Write your message...">
+        <div>
+            <label for="sender">Your id</label>
+            <input type="text" id="sender" class="form-control" placeholder="Your id here...">
+            <button type="button" onclick="connect()">connect</button>
+        </div>
+        <div>
+            <label for="recipient">Recipient id</label>
+            <input type="text" id="recipient" class="form-control" placeholder="Recipient id here...">
+        </div>
+        <div>
+            <label for="message">Message</label>
+            <input type="text" id="message" class="form-control" placeholder="Write your message...">
+        </div>
 
         <button id="send" class="btn btn-default" type="submit">Send</button>
     </form>
     <table id="conversation" class="table table-striped">
         <thead>
-        <tr>
-            <th>Chat</th>
-        </tr>
+            <tr>
+                <th>Chat</th>
+            </tr>
         </thead>
         <tbody id="messages">
         </tbody>

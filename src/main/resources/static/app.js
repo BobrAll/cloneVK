@@ -2,31 +2,38 @@ const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/messenger'
 });
 
-stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/user/1/queue/messages', (greeting) => {
-        let message = JSON.parse(greeting.body);
-        showGreeting(message.senderId + ": " + message.content);
+function connect() {
+    let sender_id = $("#sender").val()
+
+    stompClient.subscribe(`/user/${sender_id}/queue/messages`, (data) => {
+        let message = JSON.parse(data.body);
+        showMessage(message.senderId, message.content);
     });
 };
 
-function sendName() {
+function sendMessage() {
+    let sender_id = $("#sender").val()
+    let recipient_id = $("#recipient").val()
+    let message = $("#message").val()
+
     stompClient.publish({
         destination: "/chat/message",
         body: JSON.stringify({
-            'senderId': $("#sender").val(),
-            'recipientId': $("#recipient").val(),
-            'content': $("#message").val()})
+            'senderId': sender_id,
+            'recipientId': recipient_id,
+            'content': message})
     });
+
+    showMessage(sender_id, message)
 }
 
-function showGreeting(message) {
-    $("#messages").append("<tr><td>" + message + "</td></tr>");
+function showMessage(id, content) {
+    $("#messages").append("<tr><td>" + id + ": " + content + "</td></tr>");
 }
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
-    $( "#send" ).click(() => sendName());
+    $("#send").click(() => sendMessage());
 });
 
 stompClient.activate();

@@ -1,5 +1,6 @@
 package bobr.cloneVK.config;
 
+import bobr.cloneVK.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,7 +19,7 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET_KEY = "6A576E5A7234753778214125442A472D4B6150645267556B703273357638792F";
 
-    public String extractUsername(String token) {
+    public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -27,15 +28,15 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(User user) {
+        return generateToken(new HashMap<>(), user);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, User user) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -43,7 +44,7 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractId(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
