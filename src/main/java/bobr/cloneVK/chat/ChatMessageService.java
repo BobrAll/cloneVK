@@ -1,6 +1,7 @@
 package bobr.cloneVK.chat;
 
 import bobr.cloneVK.chatRoom.ChatRoomService;
+import bobr.cloneVK.exceptions.chat.UserDoesNotHaveAccessToChatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class ChatMessageService {
 
     public List<ChatMessage> findMessages(String login, Integer chatId) {
         if (!chatRoomService.haveUser(chatId, login))
-            return null;
+            throw new UserDoesNotHaveAccessToChatException();
 
         return chatMessageRepository.findAllByChatRoomId(chatId);
     }

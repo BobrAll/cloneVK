@@ -1,4 +1,4 @@
-package bobr.cloneVK.exceptions.registration;
+package bobr.cloneVK.exceptions.chat;
 
 import bobr.cloneVK.exceptions.ExceptionBody;
 import org.springframework.http.HttpStatus;
@@ -6,15 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
 @ControllerAdvice
-public class RegisterExceptionHandler {
+public class ChatExceptionHandler {
 
-    @ExceptionHandler(value = {UserAlreadyRegisteredException.class})
-    public ResponseEntity<Object> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e) {
-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+    @ExceptionHandler(value = {UserDoesNotHaveAccessToChatException.class})
+    public ResponseEntity<Object> handleUserDoesNotHaveAccessToChatException(UserDoesNotHaveAccessToChatException e) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
 
         return new ResponseEntity<>(new ExceptionBody(e.getMessage(), status), status);
     }
