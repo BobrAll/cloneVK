@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,5 +32,13 @@ public class ChatRoomService {
                 .build();
 
         return chatRoomRepository.save(chatRoom);
+    }
+
+    public List<Integer> getChatRoomIdsByUserLogin(String login) {
+        return chatRoomRepository.findChatRoomIdsByUserLogin(login);
+    }
+
+    public boolean haveUser(Integer chatId, String login) {
+        return chatRoomRepository.findChatRoomByIdAndUserLogin(chatId, login).size() > 0;
     }
 }
