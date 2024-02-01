@@ -1,10 +1,11 @@
 package bobr.cloneVK.auth;
 
-import bobr.cloneVK.config.JwtService;
+import bobr.cloneVK.jwt.JwtService;
 import bobr.cloneVK.exceptions.registration.UserAlreadyRegisteredException;
 import bobr.cloneVK.user.Role;
 import bobr.cloneVK.user.User;
 import bobr.cloneVK.user.UserRepository;
+import bobr.cloneVK.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,13 +16,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (repository.findByEmail(request.getEmail()).isPresent()) {
+        if (userService.loadByEmail(request.getEmail()).isPresent()) {
             throw new UserAlreadyRegisteredException();
         }
 
@@ -34,8 +35,10 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
 
-        repository.save(user);
+        userService.save(user);
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
@@ -47,8 +50,9 @@ public class AuthenticationService {
                 )
         );
 
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userService.loadByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 }

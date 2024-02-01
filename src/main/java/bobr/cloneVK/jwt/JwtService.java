@@ -1,4 +1,4 @@
-package bobr.cloneVK.config;
+package bobr.cloneVK.jwt;
 
 import bobr.cloneVK.user.User;
 import io.jsonwebtoken.Claims;
@@ -6,7 +6,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -16,8 +17,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
-    private static final String SECRET_KEY = "6A576E5A7234753778214125442A472D4B6150645267556B703273357638792F";
+    @Value("${JWT_SECRET_KEY}")
+    private String SECRET_KEY;
+    private final JwtRepository jwtRepository;
 
     public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -33,19 +37,25 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, User user) {
-        return Jwts
+        String token = Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        save(token);
+        return token;
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractId(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        return isTokenExists(token) && !isTokenExpired(token);
+    }
+
+    public boolean isTokenExists(String token) {
+        return jwtRepository.findJwtByToken(token).isPresent();
     }
 
     private boolean isTokenExpired(String token) {
@@ -63,6 +73,10 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public void save(String token) {
+        jwtRepository.save(new Jwt.JwtBuilder().token(token).build());
     }
 
     private Key getSignInKey() {
