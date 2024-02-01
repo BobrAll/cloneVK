@@ -1,7 +1,7 @@
 package bobr.cloneVK.exceptions.registration;
 
 public class UserAlreadyRegisteredException extends RuntimeException {
-    public UserAlreadyRegisteredException() {
-        super("User already exist");
+    public UserAlreadyRegisteredException(String message) {
+        super(message);
     }
 }

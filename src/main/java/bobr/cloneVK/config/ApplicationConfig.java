@@ -1,6 +1,6 @@
 package bobr.cloneVK.config;
 
-import bobr.cloneVK.user.UserRepository;
+import bobr.cloneVK.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository repository;
+    private final UserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByEmail(username)
+        return username -> userService.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

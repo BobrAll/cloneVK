@@ -4,7 +4,6 @@ import bobr.cloneVK.jwt.JwtService;
 import bobr.cloneVK.exceptions.registration.UserAlreadyRegisteredException;
 import bobr.cloneVK.user.Role;
 import bobr.cloneVK.user.User;
-import bobr.cloneVK.user.UserRepository;
 import bobr.cloneVK.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,9 +21,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (userService.loadByEmail(request.getEmail()).isPresent()) {
-            throw new UserAlreadyRegisteredException();
-        }
+        if (userService.findByEmail(request.getEmail()).isPresent())
+            throw new UserAlreadyRegisteredException("A user with this email already exists");
+        if (userService.findByLogin(request.getLogin()).isPresent())
+            throw new UserAlreadyRegisteredException("A user with this login already exists");
 
         var user = User.builder()
                 .login(request.getLogin())
@@ -45,12 +45,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getLogin(),
                         request.getPassword()
                 )
         );
 
-        var user = userService.loadByEmail(request.getEmail()).orElseThrow();
+        var user = userService.findByLogin(request.getLogin()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder().token(jwtToken).build();

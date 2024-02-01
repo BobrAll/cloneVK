@@ -10,11 +10,15 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
 
-    public Optional<User> loadByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
-    public Optional<User> loadById(Integer id) {
+    public Optional<User> findByLogin(String login) {
+        return repository.findUserByLogin(login);
+    }
+
+    public Optional<User> findById(Integer id) {
         return repository.findById(id);
     }
 
