@@ -2,6 +2,7 @@ package bobr.cloneVK.chat.chatRoom;
 
 import bobr.cloneVK.chat.chatMessage.ChatMessage;
 import bobr.cloneVK.chat.chatMessage.ChatMessageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/chats")
 @RequiredArgsConstructor
+@Tag(name = "Chat")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
