@@ -1,7 +1,6 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chat.chatMessage;
 
-import bobr.cloneVK.chatRoom.ChatRoomService;
-import bobr.cloneVK.user.UserRepository;
+import bobr.cloneVK.chat.chatRoom.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -9,8 +8,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class WebSocketsChatController {
-    private final UserRepository userRepository;
+public class ChatMessageController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;

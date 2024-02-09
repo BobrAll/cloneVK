@@ -1,4 +1,4 @@
-package bobr.cloneVK.jwt;
+package bobr.cloneVK.security.jwt;
 
 import bobr.cloneVK.user.User;
 import io.jsonwebtoken.Claims;

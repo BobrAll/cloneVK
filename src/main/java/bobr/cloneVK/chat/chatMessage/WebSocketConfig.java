@@ -1,4 +1,4 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chat.chatMessage;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

@@ -1,4 +1,4 @@
-package bobr.cloneVK.chatRoom;
+package bobr.cloneVK.chat.chatRoom;
 
 import bobr.cloneVK.user.User;
 import jakarta.persistence.*;

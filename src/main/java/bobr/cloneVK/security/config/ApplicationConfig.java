@@ -1,4 +1,4 @@
-package bobr.cloneVK.config;
+package bobr.cloneVK.security.config;
 
 import bobr.cloneVK.user.UserService;
 import lombok.RequiredArgsConstructor;

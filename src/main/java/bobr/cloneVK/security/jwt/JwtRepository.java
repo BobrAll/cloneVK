@@ -1,4 +1,4 @@
-package bobr.cloneVK.jwt;
+package bobr.cloneVK.security.jwt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

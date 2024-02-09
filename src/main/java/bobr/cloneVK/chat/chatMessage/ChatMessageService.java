@@ -1,6 +1,6 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chat.chatMessage;
 
-import bobr.cloneVK.chatRoom.ChatRoomService;
+import bobr.cloneVK.chat.chatRoom.ChatRoomService;
 import bobr.cloneVK.exceptions.chat.UserDoesNotHaveAccessToChatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

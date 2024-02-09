@@ -1,4 +1,4 @@
-package bobr.cloneVK.auth;
+package bobr.cloneVK.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

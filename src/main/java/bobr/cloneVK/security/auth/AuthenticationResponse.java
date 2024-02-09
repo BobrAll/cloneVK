@@ -1,4 +1,4 @@
-package bobr.cloneVK.auth;
+package bobr.cloneVK.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

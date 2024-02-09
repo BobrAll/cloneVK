@@ -1,6 +1,6 @@
-package bobr.cloneVK.auth;
+package bobr.cloneVK.security.auth;
 
-import bobr.cloneVK.jwt.JwtService;
+import bobr.cloneVK.security.jwt.JwtService;
 import bobr.cloneVK.exceptions.registration.UserAlreadyRegisteredException;
 import bobr.cloneVK.user.Role;
 import bobr.cloneVK.user.User;

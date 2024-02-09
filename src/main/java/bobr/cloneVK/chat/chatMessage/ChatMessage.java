@@ -1,4 +1,4 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chat.chatMessage;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

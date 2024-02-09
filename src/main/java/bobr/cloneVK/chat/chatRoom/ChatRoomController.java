@@ -1,7 +1,7 @@
-package bobr.cloneVK.chatRoom;
+package bobr.cloneVK.chat.chatRoom;
 
-import bobr.cloneVK.chat.ChatMessage;
-import bobr.cloneVK.chat.ChatMessageService;
+import bobr.cloneVK.chat.chatMessage.ChatMessage;
+import bobr.cloneVK.chat.chatMessage.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

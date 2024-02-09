@@ -1,4 +1,4 @@
-package bobr.cloneVK.chat;
+package bobr.cloneVK.chat.chatMessage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
