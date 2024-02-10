@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +25,12 @@ public class UserService {
 
     public void save(User user) {
         repository.save(user);
+    }
+
+    public Set<User> findByCriteria(UserSearchCriteria criteria) {
+        return repository.findByCriteria(
+                criteria.getLogin(),
+                criteria.getFirstname(),
+                criteria.getLastname());
     }
 }

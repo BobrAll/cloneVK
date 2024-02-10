@@ -1,15 +1,10 @@
 package bobr.cloneVK.security.auth;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 
 @Data
 @Builder
@@ -24,6 +19,9 @@ public class RegisterRequest {
 
     @Pattern(regexp = "^[а-яА-Яa-zA-Z]{1,20}$")
     private String lastname;
+
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z]{0,20}$")
+    private String patronymic;
 
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*" +
             "@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
