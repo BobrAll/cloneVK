@@ -10,7 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -32,6 +34,13 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @ManyToMany
+    @JoinTable(name = "friends")
+    private Set<User> friends = new HashSet<>();
+
+    public void addFriend(User friend) {
+        friends.add(friend);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
