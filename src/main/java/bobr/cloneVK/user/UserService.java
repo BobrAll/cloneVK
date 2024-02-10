@@ -26,7 +26,7 @@ public class UserService {
     public User findById(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(
-                        String.format("Пользователь с id=%d н найден.", id))
+                        String.format("Пользователь с id=%d не найден.", id))
                 );
     }
 
