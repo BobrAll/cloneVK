@@ -2,7 +2,6 @@ package bobr.cloneVK.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 import java.util.Set;
@@ -16,10 +15,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "ORDER BY u.lastname " +
             "LIMIT 50"
     )
-    Set<User> findByCriteria(@Param("login") String login,
-                             @Param("firstname") String firstname,
-                             @Param("lastname") String lastname);
+    Set<User> findByCriteria(String login,
+                             String firstname,
+                             String lastname);
+
+    @Query("SELECT f.id FROM User u " +
+            "JOIN u.friends f " +
+            "WHERE u.id = :userId")
+    Set<Integer> getFriends(Integer userId);
 
     Optional<User> findByEmail(String email);
+
     Optional<User> findUserByLogin(String login);
 }

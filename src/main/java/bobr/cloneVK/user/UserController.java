@@ -1,11 +1,7 @@
 package bobr.cloneVK.user;
 
-import bobr.cloneVK.exceptions.user.UserNotFoundException;
-import bobr.cloneVK.exceptions.user.WrongUserException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -27,24 +23,19 @@ public class UserController {
                 .collect(Collectors.toSet());
     }
 
+    @GetMapping("/{userId}/friends")
+    Set<Integer> getUserFriends(@PathVariable Integer userId) {
+        return userService.getFriends(userId);
+    }
+
     @PostMapping("/{userId}/friends/{friendId}")
     void addFriend(@PathVariable Integer userId,
                    @PathVariable Integer friendId) {
 
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(
-                        String.format("Пользователь с id=%d н найден.", userId))
-                );
+        User user = userService.findById(userId);
+        User friend = userService.findById(friendId);
 
-        User friend = userService.findById(friendId)
-                .orElseThrow(() -> new UserNotFoundException(
-                        String.format("Невозможно добавить в друзья " +
-                                "пользователя с id=%d, т.к. он не существует.", userId))
-                );
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.getName().equals(user.getUsername()))
-            throw new WrongUserException();
+        userService.checkAccess(user);
 
         user.addFriend(friend);
         userService.save(user);
