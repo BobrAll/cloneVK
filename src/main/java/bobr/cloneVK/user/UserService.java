@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,13 @@ public class UserService {
             throw new WrongUserException();
     }
 
-    public Set<Integer> getFriends(Integer userId) {
-        return repository.getFriends(userId);
+    public Set<UserDto> getFriends(Integer userId) {
+        return convertToUserDto(repository.getFriends(userId));
+    }
+
+    public Set<UserDto> convertToUserDto(Set<User> users) {
+        return users.stream()
+                .map(user -> new UserDto(user))
+                .collect(Collectors.toSet());
     }
 }

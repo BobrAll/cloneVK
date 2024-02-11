@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -17,14 +16,11 @@ public class UserController {
 
     @GetMapping()
     Set<UserDto> findUsersByCriteria(@RequestBody UserSearchCriteria criteria) {
-        return userService.findByCriteria(criteria)
-                .stream()
-                .map(user -> new UserDto(user))
-                .collect(Collectors.toSet());
+        return userService.convertToUserDto(userService.findByCriteria(criteria));
     }
 
     @GetMapping("/{userId}/friends")
-    Set<Integer> getUserFriends(@PathVariable Integer userId) {
+    Set<UserDto> getUserFriends(@PathVariable Integer userId) {
         return userService.getFriends(userId);
     }
 

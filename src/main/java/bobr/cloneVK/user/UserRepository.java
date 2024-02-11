@@ -19,10 +19,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
                              String firstname,
                              String lastname);
 
-    @Query("SELECT f.id FROM User u " +
-            "JOIN u.friends f " +
+    @Query("SELECT u.friends FROM User u " +
             "WHERE u.id = :userId")
-    Set<Integer> getFriends(Integer userId);
+    Set<User> getFriends(Integer userId);
 
     Optional<User> findByEmail(String email);
 
