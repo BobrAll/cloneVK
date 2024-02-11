@@ -2,7 +2,9 @@ package bobr.cloneVK.chat.chatRoom;
 
 import bobr.cloneVK.chat.chatMessage.ChatMessage;
 import bobr.cloneVK.chat.chatMessage.ChatMessageService;
+import bobr.cloneVK.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Chat")
 public class ChatRoomController {
+    private final UserService userService;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
 
@@ -32,5 +35,12 @@ public class ChatRoomController {
         String login = authentication.getName();
 
         return chatMessageService.findMessages(login, chatId);
+    }
+
+    @PostMapping()
+    public void createPublicChat(@RequestBody @Valid CreatePublicChatRequest chatRequest) {
+        userService.checkAccess(chatRequest.getOwner());
+
+        chatRoomService.createPublicChatRoom(chatRequest);
     }
 }

@@ -9,8 +9,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
-    @Query("SELECT c FROM ChatRoom c JOIN c.users u WHERE u IN :users GROUP BY c HAVING COUNT(u) = 2")
-    Optional<ChatRoom> findByUsers(Set<User> users);
+    @Query("SELECT c FROM ChatRoom c JOIN c.users u " +
+            "WHERE u IN :users " +
+            "AND c.owner is null")
+    Optional<ChatRoom> findPrivateChatRoomByUsers(Set<User> users);
 
     @Query("SELECT c.id FROM ChatRoom c JOIN c.users u WHERE u.id = :userId")
     List<Integer> findChatRoomIdsByUserId(Integer userId);

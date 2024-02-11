@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,7 +16,11 @@ public class ChatMessageController {
     @MessageMapping("/message")
     public void sendMessage(ChatMessage chatMessage) {
         if (chatMessage.getChatRoomId() == null) {
-            Integer chatRoomId = chatRoomService.getChatRoomId(chatMessage.getSenderId(), chatMessage.getRecipientId());
+            Integer chatRoomId =
+                    chatRoomService.getPrivateChatRoomId(
+                            chatMessage.getSenderId(),
+                            chatMessage.getRecipientId()
+                    );
 
             chatMessage.setChatRoomId(chatRoomId);
         }

@@ -16,19 +16,31 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
-    public int getChatRoomId(int senderId, int recipientId) {
+    public int getPrivateChatRoomId(int senderId, int recipientId) {
         Set<User> users = new HashSet<>();
         users.add(userRepository.findById(senderId).orElseThrow());
         users.add(userRepository.findById(recipientId).orElseThrow());
 
-        Optional<ChatRoom> chatRoom = chatRoomRepository.findByUsers(users);
-        return chatRoom.isPresent() ? chatRoom.get().getId() : createChatRoom(users).getId();
+        Optional<ChatRoom> chatRoom = chatRoomRepository
+                .findPrivateChatRoomByUsers(users);
+
+        return chatRoom.isPresent() ? chatRoom.get().getId() : createPrivateChatRoom(users).getId();
     }
 
-    private ChatRoom createChatRoom(Set<User> users) {
+    private ChatRoom createPrivateChatRoom(Set<User> users) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .users(users)
-                .isGroup(false)
+                .build();
+
+        return chatRoomRepository.save(chatRoom);
+    }
+
+    public ChatRoom createPublicChatRoom(CreatePublicChatRequest chatRequest) {
+        ChatRoom chatRoom = ChatRoom.builder()
+                .owner(chatRequest.getOwner())
+                .name(chatRequest.getName())
+                .users(new HashSet<>(userRepository
+                        .findAllById(chatRequest.getUsers())))
                 .build();
 
         return chatRoomRepository.save(chatRoom);
