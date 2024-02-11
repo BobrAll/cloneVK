@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
 @RequiredArgsConstructor
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class ChatMessageController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;

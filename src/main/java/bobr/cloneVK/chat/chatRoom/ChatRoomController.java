@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("api/v1/chats")
 @RequiredArgsConstructor
 @Tag(name = "Chat")
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;

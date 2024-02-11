@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @Tag(name = "User")
-@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class UserController {
 
     private final UserService userService;
