@@ -9,5 +9,5 @@
  - WebSockets
  - Docker compose
 
-Для запуска необходимо запустить скрипт ./build_start.sh  
+Для локального деплоя необходимо запустить скрипт ./build_start.sh  
 После запуска документацию rest api можно найти по адресу: http://localhost:8080/swagger-ui/index.html
