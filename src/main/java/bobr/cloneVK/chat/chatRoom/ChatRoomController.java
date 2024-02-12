@@ -3,6 +3,7 @@ package bobr.cloneVK.chat.chatRoom;
 import bobr.cloneVK.chat.chatMessage.ChatMessage;
 import bobr.cloneVK.chat.chatMessage.ChatMessageService;
 import bobr.cloneVK.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class ChatRoomController {
     private final ChatMessageService chatMessageService;
 
     @GetMapping()
+    @Operation(summary = "Get user chats")
     public List<Integer> getChatsList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -30,6 +32,7 @@ public class ChatRoomController {
     }
 
     @GetMapping("/{chatId}/messages")
+    @Operation(summary = "Get messages in chat")
     public List<ChatMessage> getMessages(@PathVariable Integer chatId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -38,6 +41,7 @@ public class ChatRoomController {
     }
 
     @PostMapping()
+    @Operation(summary = "Create new public chat")
     public void createPublicChat(@RequestBody @Valid CreatePublicChatRequest chatRequest) {
         userService.checkAccess(chatRequest.getOwner());
 

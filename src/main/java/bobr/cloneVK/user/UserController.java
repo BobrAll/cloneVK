@@ -1,5 +1,7 @@
 package bobr.cloneVK.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +17,19 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
+    @Operation(summary = "Find users by criteria")
     Set<UserDto> findUsersByCriteria(@RequestBody UserSearchCriteria criteria) {
         return userService.convertToUserDto(userService.findByCriteria(criteria));
     }
 
     @GetMapping("/{userId}/friends")
+    @Operation(summary = "Get list of user friends")
     Set<UserDto> getUserFriends(@PathVariable Integer userId) {
         return userService.getFriends(userId);
     }
 
     @PostMapping("/{userId}/friends/{friendId}")
+    @Operation(summary = "Add new friend")
     void addFriend(@PathVariable Integer userId,
                    @PathVariable Integer friendId) {
 
