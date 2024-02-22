@@ -1,14 +1,15 @@
 package bobr.cloneVK.chat.chatRoom;
 
+import bobr.cloneVK.chat.chatRoom.model.ChatRoom;
+import bobr.cloneVK.chat.chatRoom.model.PrivateChatRoom;
+import bobr.cloneVK.chat.chatRoom.model.PublicChatRoom;
 import bobr.cloneVK.user.User;
 import bobr.cloneVK.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,36 +22,41 @@ public class ChatRoomService {
         users.add(userRepository.findById(senderId).orElseThrow());
         users.add(userRepository.findById(recipientId).orElseThrow());
 
-        Optional<ChatRoom> chatRoom = chatRoomRepository
+        Optional<PrivateChatRoom> chatRoom = chatRoomRepository
                 .findPrivateChatRoomByUsers(users);
 
         return chatRoom.isPresent() ? chatRoom.get().getId() : createPrivateChatRoom(users).getId();
     }
 
     private ChatRoom createPrivateChatRoom(Set<User> users) {
-        ChatRoom chatRoom = ChatRoom.builder()
+        PrivateChatRoom chatRoom = PrivateChatRoom.builder()
                 .users(users)
                 .build();
 
         return chatRoomRepository.save(chatRoom);
     }
 
-    public ChatRoom createPublicChatRoom(CreatePublicChatRequest chatRequest) {
-        ChatRoom chatRoom = ChatRoom.builder()
-                .owner(chatRequest.getOwner())
+    public ChatRoomDto createPublicChatRoom(CreatePublicChatRequest chatRequest) {
+        PublicChatRoom chatRoom = PublicChatRoom.builder()
+                .ownerId(chatRequest.getOwnerId())
                 .name(chatRequest.getName())
                 .users(new HashSet<>(userRepository
                         .findAllById(chatRequest.getUsers())))
                 .build();
 
-        return chatRoomRepository.save(chatRoom);
-    }
+        chatRoom = chatRoomRepository.save(chatRoom);
 
-    public List<Integer> getChatRoomIdsByUserLogin(String login) {
-        return chatRoomRepository.findChatRoomIdsByUserLogin(login);
+        return new ChatRoomDto(chatRequest.getOwnerId(), chatRoom);
     }
 
     public boolean haveUser(Integer chatId, String login) {
-        return chatRoomRepository.findChatRoomByIdAndUserLogin(chatId, login).size() > 0;
+        return !chatRoomRepository.findChatRoomByIdAndUserLogin(chatId, login).isEmpty();
+    }
+
+    public Set<ChatRoomDto> getUserChatsByUserId(Integer userId) {
+        return chatRoomRepository.findChatRoomsByUserId(userId)
+                .stream()
+                .map(chatRoom -> new ChatRoomDto(userId, chatRoom))
+                .collect(Collectors.toSet());
     }
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class CreatePublicChatRequest {
     @NotNull
-    private Integer owner;
+    private Integer ownerId;
     private Set<Integer> users;
     @Size(min = 1, max = 16)
     private String name;

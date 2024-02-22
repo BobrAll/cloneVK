@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/v1/chats")
@@ -22,13 +23,12 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
 
-    @GetMapping()
+    @GetMapping("/users/{userId}")
     @Operation(summary = "Get user chats")
-    public List<Integer> getChatsList() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
+    public Set<ChatRoomDto> getChatsList(@PathVariable Integer userId) {
+        userService.checkAccess(userId);
 
-        return chatRoomService.getChatRoomIdsByUserLogin(login);
+        return chatRoomService.getUserChatsByUserId(userId);
     }
 
     @GetMapping("/{chatId}/messages")
@@ -42,9 +42,9 @@ public class ChatRoomController {
 
     @PostMapping()
     @Operation(summary = "Create new public chat")
-    public void createPublicChat(@RequestBody @Valid CreatePublicChatRequest chatRequest) {
-        userService.checkAccess(chatRequest.getOwner());
+    public ChatRoomDto createPublicChat(@RequestBody @Valid CreatePublicChatRequest chatRequest) {
+        userService.checkAccess(chatRequest.getOwnerId());
 
-        chatRoomService.createPublicChatRoom(chatRequest);
+        return chatRoomService.createPublicChatRoom(chatRequest);
     }
 }

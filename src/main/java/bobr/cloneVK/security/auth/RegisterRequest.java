@@ -20,9 +20,6 @@ public class RegisterRequest {
     @Pattern(regexp = "^[а-яА-Яa-zA-Z]{1,20}$")
     private String lastname;
 
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z]{0,20}$")
-    private String patronymic;
-
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*" +
             "@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String email;
